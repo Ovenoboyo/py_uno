@@ -2,5 +2,5 @@ class NumberCards(object):
 
     def __init__(self, color, number):
         self.color = color
-        self.number = number
+        self.name = number
         self.type = "NORMAL"
