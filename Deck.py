@@ -8,13 +8,12 @@ class Deck(object):
     cards = []
 
     def __init__(self):
-        for i in range(80):
-            card_types = [NumberCards.NumberCards(color=random.choice(self.colors), number=random.randint(0, 9)),
-                          SpecialCards.Reverse(color=random.choice(self.colors)),
-                          SpecialCards.Skip(color=random.choice(self.colors))]
-            card = random.choice(card_types)
-            print(card.color)
-            self.cards.append(card)
+        for i in range(60):
+            for k in range(4):
+                self.cards.append(SpecialCards.Reverse(color=self.colors[k]))
+                self.cards.append(SpecialCards.Skip(color=self.colors[k]))
+                for j in range(10):
+                    self.cards.append(NumberCards.NumberCards(color=self.colors[k], number=j))
 
     def remove_card(self, card):
         self.cards.remove(card)
