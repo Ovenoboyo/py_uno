@@ -1,7 +1,3 @@
-import random
-
-from Cards import NumberCards
-from Cards import SpecialCards
 from Deck import Deck
 from PlaySpace import PlaySpace
 from Players import User, AllUsers
@@ -26,11 +22,26 @@ def populate_hands():
 
 
 def get_players_count():
-    return int(input("Enter total players"))
+    while True:
+        try:
+            return int(input("Enter total players"))
+        except ValueError:
+            print("Invalid input, try again")
 
 
 def get_player_details(count: int):
     return input("Enter player name" + str(count))
+
+
+def get_card_input(whose_turn):
+    while True:
+        try:
+            val = int(input("Play a card")) - 1
+            if val < 0 or val >= len(whose_turn.hand):
+                raise ValueError
+            return val
+        except ValueError:
+            print("Invalid input, try again")
 
 
 def populate_hand_counts():
@@ -78,7 +89,7 @@ def run_game():
         while not valid:
             display_cards(whose_turn)
             """ Gets index of card from users inventory """
-            card_number = int(input("Play a card")) - 1
+            card_number = get_card_input(whose_turn=whose_turn)
 
             """ Get the card from inventory of user """
             card = whose_turn.get_card(card_number)
