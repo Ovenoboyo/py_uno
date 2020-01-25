@@ -4,23 +4,25 @@ from Cards import NumberCards
 from Cards import SpecialCards
 from Deck import Deck
 from PlaySpace import PlaySpace
-from Players import User
+from Players import User, AllUsers
 
 public_deck = Deck()
 public_play_space = PlaySpace()
-whose_turn: User
-players = []
+players: AllUsers
 players_count = -1
 hand_counts = []
 
 
 def populate_hands():
+    global players
+    players_list = []
     for player in range(players_count):
         hand = []
         for i in range(7):
             card = public_deck.get_random_card()
             hand.append(card)
-        players.append(User(hand=hand, name=get_player_details(player)))
+        players_list.append(User(hand=hand, name=get_player_details(player)))
+    players = AllUsers(player_list=players_list)
 
 
 def get_players_count():
@@ -31,16 +33,10 @@ def get_player_details(count: int):
     return input("Enter player name" + str(count))
 
 
-def first_player():
-    """ Decides first player """
-    global whose_turn
-    whose_turn = random.choice(players)
-
-
 def populate_hand_counts():
     global hand_counts
     hand_counts_tmp = []
-    for item in players:
+    for item in players.players:
         hand_counts_tmp.append(len(item.hand))
     hand_counts = hand_counts_tmp
 
@@ -52,9 +48,8 @@ def display_cards(player: User):
 
 
 def run_game():
-    global whose_turn
     while 0 not in hand_counts:
-        current_player_index = players.index(whose_turn)
+        whose_turn = players.current_player
 
         no_cards_playable = True
         for card in whose_turn.hand:
@@ -67,10 +62,10 @@ def run_game():
             drawn_card_valid = False
             while not drawn_card_valid:
                 drawn_card = public_deck.draw_top_card()
+                print("Drew card:", drawn_card.color, drawn_card.name)
                 if public_play_space.can_play(drawn_card):
 
                     """ add drawn card to inventory """
-                    print("Drew card:", drawn_card.color, drawn_card.name)
                     whose_turn.add_card(drawn_card)
                     drawn_card_valid = True
                 else:
@@ -97,25 +92,20 @@ def run_game():
                 """ Adds card played to play space """
                 public_play_space.add_card(card)
 
+                whose_turn = players.next_player(card)
+
                 valid = True
             else:
                 print("That card cant be played")
                 valid = False
 
-        """ Rotates player turns """
-        if current_player_index + 1 > (len(players) - 1):
-            whose_turn = players[0]
-        else:
-            whose_turn = players[current_player_index + 1]
-
         """ Updates hand count of each player"""
         populate_hand_counts()
-    print(players[hand_counts.index(0)].name, "Wins!")
+    print(players.players[hand_counts.index(0)].name, "Wins!")
 
 
 if __name__ == '__main__':
     players_count = get_players_count()
     populate_hands()
     populate_hand_counts()
-    first_player()
     run_game()

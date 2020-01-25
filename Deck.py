@@ -13,7 +13,6 @@ class Deck(object):
                           SpecialCards.Reverse(color=random.choice(self.colors)),
                           SpecialCards.Skip(color=random.choice(self.colors))]
             card = random.choice(card_types)
-            print(card.color)
             self.cards.append(card)
 
     def remove_card(self, card):
