@@ -7,7 +7,8 @@ class PlaySpace(object):
 
     def can_play(self, card):
         if len(self.cards) > 0:
-            if self.cards[len(self.cards) - 1].color == card.color:
+            if self.cards[len(self.cards) - 1].color == card.color or \
+                    self.cards[len(self.cards) - 1].number == card.number:
                 return True
             else:
                 return False
