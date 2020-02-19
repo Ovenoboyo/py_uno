@@ -1,6 +1,6 @@
 from Deck import Deck
 from PlaySpace import PlaySpace
-from Players import User, AllUsers
+from Players import User, Al
 
 public_deck = Deck()
 public_play_space = PlaySpace()

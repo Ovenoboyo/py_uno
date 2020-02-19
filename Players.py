@@ -22,14 +22,12 @@ class AllUsers(object):
     """ Since special cards directly affect player / player sequence"""
     def next_player(self, card):
 
-        # Conditions for normal cards
         if card.number > 0:
             if self.current_player_index + 1 > (len(self.players) - 1):
                 self.current_player_index = 0
             else:
                 self.current_player_index += 1
 
-        # Conditions for special cards
         elif card.number < 0:
             """ Skip card """
             if card.number == -2:
