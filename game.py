@@ -2,6 +2,8 @@ from Deck import Deck
 from PlaySpace import PlaySpace
 from Players import User, Al
 
+from uno.Players import AllUsers
+
 public_deck = Deck()
 public_play_space = PlaySpace()
 players: AllUsers
